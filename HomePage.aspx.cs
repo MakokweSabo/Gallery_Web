@@ -11,12 +11,21 @@ namespace Gallery_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Label1.Visible = false;
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            Response.Redirect("LoginPage.aspx");
+            
+            try
+                {Response.Redirect("LoginPage.aspx");
+                }
+            catch(Exception E)
+            {
+                Label1.Visible = true;
+
+                Label1.Text =  "ERROR!!  PAGE NOT FOUND!";
+            }
         }
     }
 }
