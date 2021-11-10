@@ -24,6 +24,9 @@
                     <asp:Label ID="Label3" runat="server" BorderStyle="Outset" Font-Bold="True" Font-Italic="False" Font-Size="X-Large" Text="LOG-IN " Width="651px"></asp:Label>
                     <br />
                     <br />
+                    <asp:Label ID="Label7" runat="server"></asp:Label>
+                    <br />
+                    <br />
                     <asp:Label ID="Label4" runat="server" Text="USERNAME:"></asp:Label>
                     &nbsp;&nbsp;&nbsp;
                     <asp:TextBox ID="TextBox1" runat="server" ToolTip="Enter Username as Text"></asp:TextBox>
@@ -32,14 +35,14 @@
                     <br />
                     <asp:Label ID="Label2" runat="server" Text="PASSWORD: "></asp:Label>
                     &nbsp;&nbsp;
-                    <asp:TextBox ID="TextBox2" runat="server" ToolTip="Enter Password associated with username"></asp:TextBox>
+                    <asp:TextBox ID="TextBox2" runat="server" TextMode="Password" ToolTip="Enter Password associated with username"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="TextBox2" ErrorMessage="Password required!!" ForeColor="Red"></asp:RequiredFieldValidator>
                     <br />
                     <br />
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <asp:Label ID="Label5" runat="server" Text="VERIFY PASSWORD:"></asp:Label>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <asp:TextBox ID="TextBox3" runat="server" Width="150px"></asp:TextBox>
+                    <asp:TextBox ID="TextBox3" runat="server" TextMode="Password" Width="150px"></asp:TextBox>
                     <asp:CompareValidator ID="CompareValidator2" runat="server" ControlToCompare="TextBox2" ControlToValidate="TextBox3" ErrorMessage="Password dont match original. Try again" ForeColor="Red"></asp:CompareValidator>
                     <br />
                     <br />
@@ -54,6 +57,7 @@
                 </center>
             </asp:Panel>
         </div>
+        
     </form>
 </body>
 </html>
