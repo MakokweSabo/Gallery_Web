@@ -4,6 +4,10 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Data.Sql;
+using System.Data.SqlClient;
+using System.Configuration;
+
 
 namespace Gallery_Web
 {
@@ -11,6 +15,7 @@ namespace Gallery_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             Label5.Visible = false;
             TextBox3.Visible = false;
             RequiredFieldValidator1.Enabled = false;
@@ -32,7 +37,42 @@ namespace Gallery_Web
             
             RequiredFieldValidator1.Enabled = true;
             RequiredFieldValidator2.Enabled = true;
-            
+
+             
+           
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+                con.Open();
+                string User = "SELECT count(*) FROM UserTable WHERE UserName ='" + TextBox1.Text + "'";
+               SqlCommand cmd = new SqlCommand(User,con);
+               int temp = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+               con.Close();
+            if(temp ==1)
+            {
+                con.Open();
+                string password = "SELECT Password FROM UserTable WHERE UserName = '" + TextBox1.Text + "'";
+                SqlCommand Passcmd = new SqlCommand(password, con);
+                string pass = Passcmd.ExecuteScalar().ToString().Replace(" ", "");
+                if(pass == TextBox2.Text)
+                {
+                    Response.Write("PASSWORD CORRECT!!");
+                }
+                else
+                {
+                    Response.Write("PASSWORD INCORRECT");
+                    //Label7.Text = "INCORRECT LOG-IN DETAILS!,ENTER CORRECT CREDENTIALS OR REGISTER IF YOU ARE A NEW USER";
+
+                }
+            }
+            else
+            {
+                Response.Write("INCORRECT LOG-IN DETAILS!,ENTER CORRECT CREDENTIALS OR REGISTER IF YOU ARE A NEW USER!!");
+                
+
+            }
+           
+                  
+                
+          
 
 
         }
