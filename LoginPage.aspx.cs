@@ -22,10 +22,10 @@ namespace Gallery_Web
             RequiredFieldValidator2.Enabled = false;
             Button2.Visible = false;
         }
-
+        
         protected void LinkButton1_Click(object sender, EventArgs e)
         {
-           
+            RequiredFieldValidator1.Enabled = false;
             Label5.Visible = true;
             TextBox3.Visible = true;
             Button1.Visible = false;
@@ -59,14 +59,15 @@ namespace Gallery_Web
                 else
                 {
                     Response.Write("PASSWORD INCORRECT");
-                    //Label7.Text = "INCORRECT LOG-IN DETAILS!,ENTER CORRECT CREDENTIALS OR REGISTER IF YOU ARE A NEW USER";
+                    
 
                 }
             }
             else
             {
-                Response.Write("INCORRECT LOG-IN DETAILS!,ENTER CORRECT CREDENTIALS OR REGISTER IF YOU ARE A NEW USER!!");
-                
+                Label7.Text ="INCORRECT LOG-IN DETAILS!,ENTER CORRECT CREDENTIALS OR REGISTER IF YOU ARE A NEW USER!!";
+                Label7.ForeColor = System.Drawing.Color.Red;
+                RequiredFieldValidator2.Enabled = false;
 
             }
            
@@ -79,10 +80,66 @@ namespace Gallery_Web
 
         protected void Button2_Click(object sender, EventArgs e)
         {
+            RequiredFieldValidator2.Enabled = true;
             CompareValidator2.Enabled = true;
             Label5.Visible = true;
             TextBox3.Visible = true;
             Button2.Visible = true;
+
+
+            SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+            con.Open();
+            string User = "SELECT count(*) FROM UserTable WHERE UserName ='" + TextBox1.Text + "'";
+            SqlCommand cmd = new SqlCommand(User, con);
+            int temp = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+            con.Close();
+            if (temp == 1)
+            {
+                Label7.Text = "USER NAME ALREADY TAKEN!!,CHOOSE ANOTHER ONE";
+                con.Open();
+                string passW = "SELECT Password FROM UserTable";
+                SqlCommand com = new SqlCommand(passW, con);
+                string tempo = com.ExecuteScalar().ToString();
+                if(tempo == TextBox2.Text)
+                {
+                    Label7.Text = "WEAK PASSWORD!!";
+                }
+                else
+                {
+                    Response.Write( " Strong password");
+                    Response.End();
+                }
+                con.Close();
+                
+            }
+            else
+            {
+                Label7.Text = "REGISTRATION SUCCESSFUL!!.NOW LOG-IN";
+                 Button1.Visible = true;
+                 Button2.Visible = false;
+                Label7.ForeColor = System.Drawing.Color.Green;
+                TextBox3.Visible = false;
+                Label5.Visible = false;
+
+                con.Open();
+                SqlCommand AddUser = new SqlCommand("INSERT INTO UserTable VALUES(@UserName,@Password",con);
+                AddUser.Parameters.AddWithValue("UserName", TextBox1.Text);
+                AddUser.Parameters.AddWithValue("Password", TextBox2.Text);
+                AddUser.ExecuteNonQuery();
+
+                TextBox1.Text = "";
+                TextBox2.Text = "";
+
+
+
+            }
+
+            
+
+
         }
+               
+            
+        
     }
 }

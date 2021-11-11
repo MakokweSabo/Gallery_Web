@@ -30,7 +30,7 @@
                     <asp:Label ID="Label4" runat="server" Text="USERNAME:"></asp:Label>
                     &nbsp;&nbsp;&nbsp;
                     <asp:TextBox ID="TextBox1" runat="server" ToolTip="Enter Username as Text"></asp:TextBox>
-                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="UserName Required!!"></asp:RequiredFieldValidator>
+                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="UserName Required!!" Enabled="False" ForeColor="Red"></asp:RequiredFieldValidator>
                     <br />
                     <br />
                     <asp:Label ID="Label2" runat="server" Text="PASSWORD: "></asp:Label>
