@@ -7,6 +7,12 @@ using System.Web.UI.WebControls;
 using System.Data.Sql;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Security.Cryptography;
+using System.IO;
+using System.Text;
+using System.Data;
+
+
 
 
 namespace Gallery_Web
@@ -32,6 +38,18 @@ namespace Gallery_Web
             Button2.Visible = true;
         }
 
+        private string Encryptdata(string password)
+        {
+            string strmsg = string.Empty;
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            strmsg = Convert.ToBase64String(encode);
+            return strmsg;
+            
+        }
+
+
+       
         protected void Button1_Click(object sender, EventArgs e)
         {
             
@@ -50,15 +68,21 @@ namespace Gallery_Web
             {
                 con.Open();
                 string password = "SELECT Password FROM UserTable WHERE UserName = '" + TextBox1.Text + "'";
+               
                 SqlCommand Passcmd = new SqlCommand(password, con);
                 string pass = Passcmd.ExecuteScalar().ToString().Replace(" ", "");
-                if(pass == TextBox2.Text)
+                if(pass == Encryptdata(TextBox2.Text))
                 {
-                    Response.Write("PASSWORD CORRECT!!");
+                    Label7.Text = "PASSWORD CORRECT!!";
+                    Label7.ForeColor = System.Drawing.Color.Green;
+                    Response.Redirect("HomePage.aspx");
                 }
                 else
                 {
-                    Response.Write("PASSWORD INCORRECT");
+                    Label7.Text = "INCORRECT PASSWORD!!";
+                    Label7.ForeColor = System.Drawing.Color.Red;
+                    RequiredFieldValidator2.Enabled = false;
+                    
                     
 
                 }
@@ -96,39 +120,42 @@ namespace Gallery_Web
             if (temp == 1)
             {
                 Label7.Text = "USER NAME ALREADY TAKEN!!,CHOOSE ANOTHER ONE";
-                con.Open();
-                string passW = "SELECT Password FROM UserTable";
-                SqlCommand com = new SqlCommand(passW, con);
-                string tempo = com.ExecuteScalar().ToString();
-                if(tempo == TextBox2.Text)
-                {
-                    Label7.Text = "WEAK PASSWORD!!";
-                }
-                else
-                {
-                    Response.Write( " Strong password");
-                    Response.End();
-                }
-                con.Close();
+                Label7.ForeColor = System.Drawing.Color.Red;
+                
                 
             }
             else
             {
-                Label7.Text = "REGISTRATION SUCCESSFUL!!.NOW LOG-IN";
+                con.Open();
+                string passW = "SELECT Password FROM UserTable";
+                SqlCommand com = new SqlCommand(passW, con);
+                string tempo = com.ExecuteScalar().ToString();
+                if (tempo == TextBox2.Text)
+                {
+                    Label7.Text = "WEAK PASSWORD!!";
+                    Label7.ForeColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    Label7.Text = "REGISTRATION SUCCESSFUL!!.NOW LOG-IN";
+                    Label7.ForeColor = System.Drawing.Color.Green;
+
+                }
+                
+
+          
                  Button1.Visible = true;
                  Button2.Visible = false;
-                Label7.ForeColor = System.Drawing.Color.Green;
                 TextBox3.Visible = false;
                 Label5.Visible = false;
 
-                con.Open();
-                SqlCommand AddUser = new SqlCommand("INSERT INTO UserTable VALUES(@UserName,@Password",con);
-                AddUser.Parameters.AddWithValue("UserName", TextBox1.Text);
-                AddUser.Parameters.AddWithValue("Password", TextBox2.Text);
+                
+                SqlCommand AddUser = new SqlCommand("INSERT INTO UserTable VALUES(@UserName,@Password)",con);
+                AddUser.Parameters.AddWithValue("@UserName", TextBox1.Text);
+                AddUser.Parameters.AddWithValue("@Password", Encryptdata(TextBox2.Text));
                 AddUser.ExecuteNonQuery();
 
-                TextBox1.Text = "";
-                TextBox2.Text = "";
+                con.Close();
 
 
 
