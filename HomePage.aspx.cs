@@ -12,6 +12,7 @@ namespace Gallery_Web
         protected void Page_Load(object sender, EventArgs e)
         {
             Label1.Visible = false;
+            
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -22,10 +23,14 @@ namespace Gallery_Web
                 }
             catch(Exception E)
             {
-                Label1.Visible = true;
 
-                Label1.Text =  "ERROR!!  PAGE NOT FOUND!";
+                Response.Write("ERROR!!  PAGE NOT FOUND!");
             }
+        }
+
+        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+        {
+            Response.Redirect("ImageData.aspx");
         }
     }
 }
