@@ -73,9 +73,9 @@ namespace Gallery_Web
                 string pass = Passcmd.ExecuteScalar().ToString().Replace(" ", "");
                 if(pass == Encryptdata(TextBox2.Text))
                 {
-                    Label7.Text = "PASSWORD CORRECT!!";
-                    Label7.ForeColor = System.Drawing.Color.Green;
+                    Session["User"] = TextBox1.Text;
                     Response.Redirect("HomePage.aspx");
+                    
                 }
                 else
                 {

@@ -11,7 +11,20 @@ namespace Gallery_Web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Label1.Visible = false;
+
+            Label1.Visible = true;
+            if(Session["User"] == null)
+            {
+                Label6.Visible = false;
+                Label7.Visible = false;
+            }
+            else
+            {
+                Label6.Visible = true;
+                Label7.Visible = true;
+                Label7.Text = Session["User"].ToString();
+                Label1.Visible = false;
+            }
             
         }
 
@@ -19,9 +32,10 @@ namespace Gallery_Web
         {
             
             try
-                {Response.Redirect("LoginPage.aspx");
-                }
-            catch(Exception E)
+            {
+                Response.Redirect("LoginPage.aspx");
+            }
+            catch(Exception )
             {
 
                 Response.Write("ERROR!!  PAGE NOT FOUND!");
@@ -30,7 +44,47 @@ namespace Gallery_Web
 
         protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
         {
-            Response.Redirect("ImageData.aspx");
+            try
+            {
+                if(Session["User"] == null)
+                {
+                    Label1.Visible = true;
+                    Label1.Text = "ACCESS REQUIRED!!,PLEASE LOG IN FIRST";
+                }
+                else
+                {
+                    Response.Redirect("ImageData.aspx");
+                    
+                }
+                
+            }
+            catch(Exception)
+            {
+                Response.Write("ERROR!! PAGE NOT FOUND!");
+            }
+        }
+
+        protected void ImageButton2_Click(object sender, ImageClickEventArgs e)
+        {
+            try
+            {
+                if (Session["User"] == null)
+                {
+                    Label1.Visible = true;
+                    Label1.Text = "ACCESS REQUIRED!!,PLEASE LOG IN FIRST";
+                }
+                else
+                {
+                    Response.Redirect("ImageData.aspx");
+                    
+                }
+
+            }
+            catch (Exception)
+            {
+                Response.Write("ERROR!! PAGE NOT FOUND!");
+                
+            }
         }
     }
 }
